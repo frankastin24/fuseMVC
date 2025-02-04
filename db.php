@@ -1,6 +1,6 @@
 <?php
 
-class DB {
+class Database {
 
     public $connection;
 
@@ -10,10 +10,100 @@ class DB {
 
         $this->connection = new mysqli($db_server, $db_user, $db_password, $db_database);
 
-        if ($mysqli->connect_error) {
-            die("Error: Could not connect to database. " . $mysqli->connect_error);
+        if ($this->connection->connect_error) {
+            die("Error: Could not connect to database. " . $this->connection->connect_error);
             //Display custom error page
         }
+
+    }
+
+    public function insert_row($table_name, $data) {
+
+        $fields = '';
+        $values = '';
+
+        $fields_length = count($data) - 1;
+
+        foreach($data[0] as $index => $row) {
+
+            $fields .= "`".$field[0]."`";
+
+            $values .= is_string($field[1]) ?  '"'.$field[1].'"' : $field[1];
+
+        }
+
+        $this->connection->query("INSERT INTO ".$table_name." (".$fields.")
+        VALUES (". $values .")");
+
+        return $this->connection->insert_id;
+
+    }
+
+    public function getRowByID($table_name, $id) {
+       
+        $sql = "SELECT from `". $table_name . "` WHERE id = " . $id . ";";
+
+        $result = $this->connection->query($sql);
+
+        return  $result->num_rows == 0 ? false : $result->fetch_assoc();
+
+    }
+
+    public function getWhereField($table_name,$field_name,$field_value,$comparsion) {
+
+        $sql = "SELECT from `". $table_name . "` WHERE id = " . $id . ";";
+
+        $result = $this->connection->query($sql);
+
+        return  $result->num_rows == 0 ? false : $result->fetch_assoc();
+         
+    }
+
+    public function getAllRows($table_name,$limit = false,$offset = 0,$order = 'ASC') {
+
+        $sql = "SELECT from `". $table_name . "` ";
+        $sql .= $limit ? ("LIMIT " . $limit) : ''; 
+
+        $result = $this->connection->query($sql);
+
+        return  $result->num_rows == 0 ? false : $result->fetch_assoc();
+
+    }
+
+    public function insert($table_name, $data) {
+
+        $ids = [];
+
+        if(is_array($data[0][0][0])) {
+
+            foreach($data as $row) {
+               $ids[] = $this->insert_row($table_name,$row);
+            }
+          
+        } else {
+
+            $ids = $this->insert_row($table_name,$data);
+
+        }
+ 
+        return $ids;
+
+    }
+
+    public function updateRows($table_name, $data) {
+
+        $sql = "UPDATE ".$table_name." SET ";
+        
+        $fields_length = count($data) - 1;
+        
+        foreach($data as $index => $field) {
+            $sql .= "`".$field[0]."` = '" . $field[1] . "' " . ($index == $fields_length ? ' ' : ',');
+        }
+        
+        $sql .= ";";
+
+        $this->connection->query($sql);
+
 
     }
 
@@ -61,3 +151,7 @@ class DB {
 
 
 }
+
+global $db;
+
+$db = new Database();
