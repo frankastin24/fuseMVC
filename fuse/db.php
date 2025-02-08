@@ -4,9 +4,7 @@ class Database {
 
     public $connection;
 
-    function __construct() {
-
-        global $db_server,$db_user,$db_password,$db_database;
+    function __construct($db_server,$db_user,$db_password,$db_database) {
 
         $this->connection = new mysqli($db_server, $db_user, $db_password, $db_database);
 
@@ -39,7 +37,7 @@ class Database {
 
     }
 
-    public function getRowByID($table_name, $id) {
+    public function getRowById($table_name, $id) {
        
         $sql = "SELECT from `". $table_name . "` WHERE id = " . $id . ";";
 
@@ -49,9 +47,9 @@ class Database {
 
     }
 
-    public function getWhereField($table_name,$field_name,$field_value,$comparsion) {
+    public function getWhereField($table_name,$field_name,$field_value,$comparsion = '=') {
 
-        $sql = "SELECT from `". $table_name . "` WHERE id = " . $id . ";";
+        $sql = "SELECT from ". $table_name . " WHERE id = " . $id . ";";
 
         $result = $this->connection->query($sql);
 
