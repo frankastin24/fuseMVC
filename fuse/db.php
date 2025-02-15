@@ -88,7 +88,7 @@ class Database {
 
     }
 
-    public function updateRows($table_name, $data) {
+    public function updateRow($table_name, $data) {
 
         $sql = "UPDATE ".$table_name." SET ";
         
@@ -151,5 +151,3 @@ class Database {
 }
 
 global $db;
-
-$db = new Database();

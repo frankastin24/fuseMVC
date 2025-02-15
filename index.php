@@ -6,61 +6,34 @@ Designed for http://fusionary.org
 ©2025 - Frank Astin
 */
 
-
 /* Load enviromentals */
 
-$directory = __DIR__;
+$dir = __DIR__;
 
-$env_string = file_get_contents($directory . '/.env');
+$env_string = file_get_contents($dir . '/.env');
 
-$env_lines = explode('\n' , $env_string);
-
-foreach($env_lines as $line) {
-    
-    if(!str_contains($line,':')) continue;
-
-    $line_array = explode(':', $line);
-    $label = str_replace(' ' , '' , $line_array[0]);
-    $value = str_replace(' ' , '' , $line_array[1]);
-
-    switch ($label) {
-        case 'Database Host' :
-
-           $database_host = $value;
-        
-        break;
-        case 'Database User' :
-
-            $database_user = $value;
-         
-         break;
-         case 'Database Password' :
-
-            $database_password = $value;
-         
-         break;
-         case 'Database Password' :
-
-            $database_password = $value;
-         
-         break;
-         case 'Database' :
-
-            $database = $value;
-         
-         break;
-         case 'Display Admin' :
-
-            $display_admin = boolval($value);
-         
-         break;
-         case 'Admin URL' :
-
-            $admin_url = $value;
-         
-         break;
-    }
+function clean_string($string) {
+   return  str_replace("\n", '' ,str_replace('\n', '' ,str_replace(' ', '' , $string)));
 }
+
+preg_match('/Host:(?s)(.*)Database User/',$env_string,$database_host);
+$database_host = clean_string($database_host[1]);
+
+preg_match('/User:(?s)(.*)Database Password/',$env_string,$database_user);
+$database_user = clean_string($database_user[1]);
+
+preg_match('/Password:(?s)(.*)Database Name/',$env_string,$database_password);
+$database_password = clean_string($database_password[1]);
+
+preg_match('/Name:(?s)(.*)Display Admin/',$env_string,$database_name);
+$database_name = clean_string($database_name[1]);
+
+preg_match('/Display Admin:(?s)(.*)Admin URL/',$env_string,$display_admin);
+$display_admin = clean_string(boolval($display_admin[1]));
+
+$admin_url = explode('Admin URL:',$env_string);
+
+$admin_url = $admin_url[1];
 
 /* Setup DB */
 
@@ -68,8 +41,36 @@ include $dir . '/fuse/db.php';
 
 global $db;
 
-$db = new Database($database_host,$database_user,$database_password,$database);
+$db = new Database($database_host,$database_user,$database_password,$database_name);
 
 /* Setup Model */
 
 include $dir . '/fuse/model.php';
+
+/* Load models */
+
+$path = $dir . '/models/';
+
+$models = array_diff(scandir($path), array('.', '..'));
+
+foreach($models as $model) {
+    include $path . $model;
+}
+
+/* Load controllers */
+
+$path = $dir . '/controllers/';
+
+$controllers = array_diff(scandir($path), array('.', '..'));
+
+foreach($controllers as $controller) {
+    include $path . $controller;
+}
+
+/* Routing */
+
+include $dir . '/fuse/routing.php';
+
+$route = new Route();
+
+include $dir . '/routes.php';
