@@ -13,6 +13,8 @@
 
     <div class="container">
 
+        <img src="/img/fusemvc.svg">
+
         <h1>Welcome To FuseMVC</h1>
 
         <a href="https://fusemvc.com/docs">Click Here To Read The Documentation</a>

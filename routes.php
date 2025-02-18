@@ -1,11 +1,13 @@
 <?php
 
+$route->get('/fusemvc/','welcome::index');
+
 /* Admin */
 
-$route->get('/fuse','admin->dashboard');
+$route->get('/fusemvc/fuse','admin->dashboard');
 
-$route->post('/fuse/models','admin->create_model');
-$route->delete('/fuse/models/[id]','admin->delete_model');
-$route->patch('/fuse/models/[id]','admin->update_model');
+$route->post('/fusemvc/fuse/models','admin->create_model');
+$route->delete('/fusemvc/fuse/models/[id]','admin->delete_model');
+$route->patch('/fusemvc/fuse/models/[id]','admin->update_model');
 
-$route->post('/fuse/controllers','admin->create_controller');
+$route->post('/fusemvc/fuse/controllers','admin->create_controller');

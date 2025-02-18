@@ -4,7 +4,7 @@ class Route {
 
     public function get($path, $callable) {
 
-        if(!isset($routes)) {
+        if(!isset($this->routes)) {
             $this->routes = new stdClass();
         }
 
@@ -14,7 +14,7 @@ class Route {
 
     public function post($path, $callable) {
 
-        if(!isset($routes)) {
+        if(!isset($this->routes)) {
             $this->routes = new stdClass();
         }
 
@@ -24,7 +24,7 @@ class Route {
 
     public function delete($path, $callable) {
 
-        if(!isset($routes)) {
+        if(!isset($this->routes)) {
             $this->routes = new stdClass();
         }
 
@@ -33,7 +33,7 @@ class Route {
     }
     public function patch($path, $callable) {
 
-        if(!isset($routes)) {
+        if(!isset($this->routes)) {
             $this->routes = new stdClass();
         }
 
@@ -54,15 +54,22 @@ class Route {
             preg_match('/\[(.*?)\]/',$path,$varibles);
         }
 
-        $route = $this->routes->{$method . '_'. $path};
+        $request = new stdClass();
 
-        if(is_callable($route)) {
-            call_user_func($route, $varibles);
-        } else {
-            $callable = explode('->',$route);
-            $class = new $callable[0];
+        $callable = $this->routes->{$method .  str_replace('/','_',$path)};
+
+        $callable = explode('::' , $callable);
+
+        $class = new $callable[0];
+
+        if(isset($varibles)) {
             $class->{$callable[1]}(...$varibles);
+        } else {
+            $class::{$callable[1]}();
         }
+       
+           
+    
     
     }
 }

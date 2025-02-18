@@ -74,3 +74,5 @@ include $dir . '/fuse/routing.php';
 $route = new Route();
 
 include $dir . '/routes.php';
+
+$route->execute();
