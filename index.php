@@ -1,6 +1,6 @@
 <?php
 /* 
-FuseMVC Version 0.1 
+FuseMVC Version 0.3 
 Lightweight PHP MVC framework
 Designed for http://fusionary.org
 ©2025 - Frank Astin
