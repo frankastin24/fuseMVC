@@ -48,6 +48,12 @@ static function update_post($request) {
 
 Controllers are located in the `/controllers` directory. They are implemented as static classes containing methods that handle route requests.
 
+### The request object
+
+Where ever a controller method is called from a route the '$request' object is passed as the first parameter.
+
+The request object contains all of the GET and POST variables, and the dynamic route vairables, all accessible by their key. 
+
 ---
 
 ## Models
