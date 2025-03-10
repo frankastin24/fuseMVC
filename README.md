@@ -152,7 +152,6 @@ static function list_posts() {
 ### Blade Template Example
 
 ```blade
-// /views/posts.blade.php
 <div>
     @foreach($posts as $post)
     <div>
