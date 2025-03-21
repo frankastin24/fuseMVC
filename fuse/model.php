@@ -10,7 +10,9 @@ class Model {
 
         $this->db = $db;
 
-      
+        if($id) {
+            $this->getByPrimary($id);
+        }
     }
 
     public function getById($id) {
@@ -71,6 +73,13 @@ class Model {
 
     }
 
+    public function getLast() {
+        $result =  $this->getLast();
+        foreach($this->fields as $field) {
+           $this->{$field} = $result[$field];
+        }
+    }
+
     public function getWhereField($field_name , $field_value) {
         
         $result = $this->db->getWhereField($this->table,$field_name,$field_value);
@@ -94,6 +103,36 @@ class Model {
         
 
        
+
+    }
+
+    public function hasOne($model_name) {
+        
+        $model = new $model_name();
+
+       $array = $model->getWhereField(strtolower(static::class.'_id') , $this->{$this->fields[0]} );
+
+        $this->{strtolower($model_name)} = count($array) ? $array[0] : false;
+
+    }
+
+    public function isOne($model_name) {
+        
+        $model = new $model_name();
+
+        $model->getByPrimary($this->{strtolower($model_name.'_id')} );
+
+        $this->{strtolower($model_name)} = $model;
+
+    }
+
+    public function hasMany($model_name) {
+
+        $model = new $model_name();
+
+        $array = $model->getWhereField(strtolower(static::class.'_id') , $this->{$this->fields[0]} );
+ 
+        $this->{strtolower($model_name)} = count($array) ? $array : false;
 
     }
 
@@ -128,7 +167,7 @@ class Model {
             $this->db->updateRow($this->table,$data);
             
         } else {
-            var_dump(isset($this->{$this->fields[0]}));
+            
             $data = [];
         
             foreach($this->fields as $label) {

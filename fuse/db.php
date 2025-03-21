@@ -82,7 +82,7 @@ class Database {
 
     public function getAllRows($table_name,$limit = false,$offset = 0,$order = 'ASC') {
 
-        $sql = "SELECT * from ". $table_name . " ";
+        $sql = "SELECT * from ". $table_name . " ORDER BY id DESC";
         $sql .= $limit ? ("LIMIT " . $limit) : ''; 
 
         $result = $this->connection->query($sql);
@@ -94,6 +94,16 @@ class Database {
         }
 
         return  $result->num_rows == 0 ? false : $array;
+
+    }
+
+    public function getLastRow($table_name) {
+       
+        $sql = "SELECT * FROM $table_name ORDER BY id DESC LIMIT 1;";
+       
+        $result = $this->connection->query($sql);
+
+        return $result;
 
     }
 
@@ -130,7 +140,7 @@ class Database {
         }
         
         $sql .=  " WHERE ".$primary[0]." = ".$primary[1].";";
-        var_dump($sql);
+       
         $this->connection->query($sql);
 
 

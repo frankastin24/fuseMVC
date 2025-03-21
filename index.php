@@ -1,6 +1,6 @@
 <?php
 /* 
-FuseMVC Version 0.3 
+FuseMVC Version 0.4 
 Lightweight PHP MVC framework
 Designed for http://fusionary.org
 ©2025 - Frank Astin
@@ -30,9 +30,11 @@ foreach($env_lines as $line) {
     if($line == '') continue;
 
     $split_line = explode('=', $line);
-   
-    $_ENV[$split_line[0]] = $split_line[1];
-    
+
+    $key = array_shift($split_line);
+
+    $_ENV[$key] = join('=', $split_line);
+ 
 } 
 
 
