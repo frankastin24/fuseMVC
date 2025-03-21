@@ -1,5 +1,5 @@
 # FuseMVC
-![alt text](/public/img/logo.png)
+![FuseMVC Logo](/public/img/logo-small.png)
 ## Introduction
 
 FuseMVC is a lightweight and minimal MVC framework tailored for web applications that do not require the extensive overhead of larger frameworks like Laravel. It offers essential functionality for small to medium-sized applications while maintaining simplicity and efficiency.
