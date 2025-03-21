@@ -58,7 +58,9 @@ When a route invokes a controller method, the request object is passed as the fi
 
 ## Models
 
-Models reside in the `/models` directory and extend the `Model` class. Each model defines its associated database table and fields.
+Models reside in the `/models` directory and extend the `Model` class. Each model defines its associated database table and fields.  
+
+FuseMVC assumes that the first field in the fields array is the primary key.
 
 ### Defining a Model
 
